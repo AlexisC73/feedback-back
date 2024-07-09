@@ -5,7 +5,13 @@ export class LoginPayload {
   #password: string
   #errors: FieldError[] = []
 
-  constructor({ email, password }: { email: string; password: string }) {
+  constructor({ email, password }: { email: any; password: any }) {
+    if (typeof email !== 'string') {
+      email = ''
+    }
+    if (typeof password !== 'string') {
+      password = ''
+    }
     this.#email = email
     this.#password = password
   }

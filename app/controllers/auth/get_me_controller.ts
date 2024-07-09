@@ -6,7 +6,7 @@ export default class GetMeController {
       const user = await auth.authenticate()
       return response.ok(user)
     } catch (e) {
-      return response.internalServerError()
+      throw e
     }
   }
 }

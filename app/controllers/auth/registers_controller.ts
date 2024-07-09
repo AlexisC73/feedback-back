@@ -3,6 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Account from '#models/account'
 import { Role } from '../../../lib/domain/accounts/accounts.js'
 import { RegisterPayload } from '../../../lib/domain/payload/register_payload.js'
+import FieldErrorException from '#exceptions/field_errors_exception'
 
 export default class RegistersController {
   async handle({ request, response }: HttpContext): Promise<void> {
@@ -14,10 +15,7 @@ export default class RegistersController {
     })
 
     if (!registerPayload.validate()) {
-      return response.badRequest({
-        type: 'Invalid payload',
-        data: registerPayload.errors,
-      })
+      throw new FieldErrorException(registerPayload.errors)
     }
 
     const findAccount = await Account.findBy('email', registerPayload.email)
@@ -25,15 +23,11 @@ export default class RegistersController {
       return response.forbidden()
     }
 
-    try {
-      await Account.create({
-        email: registerPayload.email,
-        password: registerPayload.password,
-        role: Role.USER,
-      })
-      return response.created()
-    } catch (e) {
-      return response.internalServerError()
-    }
+    await Account.create({
+      email: registerPayload.email,
+      password: registerPayload.password,
+      role: Role.USER,
+    })
+    return response.created()
   }
 }

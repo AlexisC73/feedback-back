@@ -3,8 +3,12 @@ import { ValueObject } from './value_object.js'
 export class EmailVO extends ValueObject {
   #email: string
 
-  constructor(email: string) {
+  constructor(email: any) {
     super()
+    if (typeof email !== 'string') {
+      this.#email = ''
+      return
+    }
     this.#email = email.trim()
   }
 
@@ -35,7 +39,10 @@ export class EmailVO extends ValueObject {
   }
 
   isEmpty(): boolean {
-    return this.#email.length <= 0
+    if (this.#email ?? false) {
+      return this.#email.length === 0
+    }
+    return true
   }
 
   private isValidEmail(email: string): boolean {

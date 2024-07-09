@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 import Account from '#models/account'
 import { LoginPayload } from '../../../lib/domain/payload/login_payload.js'
+import FieldErrorException from '#exceptions/field_errors_exception'
 
 export default class LoginsController {
   async handle({ request, response, auth }: HttpContext): Promise<void> {
@@ -13,18 +14,11 @@ export default class LoginsController {
     })
 
     if (!loginPayload.validate()) {
-      return response.badRequest({
-        type: 'Invalid payload',
-        data: loginPayload.errors,
-      })
+      throw new FieldErrorException(loginPayload.errors)
     }
 
-    try {
-      const user = await Account.verifyCredentials(loginPayload.email, loginPayload.password)
-      await auth.use('web').login(user, false)
-      return response.ok(user)
-    } catch (e) {
-      return response.badRequest()
-    }
+    const user = await Account.verifyCredentials(loginPayload.email, loginPayload.password)
+    await auth.use('web').login(user, false)
+    return response.ok(user)
   }
 }

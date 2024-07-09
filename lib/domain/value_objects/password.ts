@@ -3,9 +3,13 @@ import { ValueObject } from './value_object.js'
 export class PasswordVO extends ValueObject {
   #password: string
 
-  constructor(password: string) {
+  constructor(password: any) {
     super()
-    this.#password = password.trim()
+    if (typeof password !== 'string') {
+      this.#password = ''
+      return
+    }
+    this.#password = password
   }
 
   equals(password: PasswordVO): boolean {
@@ -19,6 +23,7 @@ export class PasswordVO extends ValueObject {
   validate(): boolean {
     const errors = []
     if (this.isEmpty() || this.#password.length < 6) {
+      console.log(this.#password)
       errors.push('Password must be at least 6 characters long')
     }
     this.setErrors(errors)
@@ -30,6 +35,9 @@ export class PasswordVO extends ValueObject {
   }
 
   isEmpty(): boolean {
-    return this.#password.length <= 0
+    if (this.#password ?? false) {
+      return this.#password.length <= 0
+    }
+    return true
   }
 }
