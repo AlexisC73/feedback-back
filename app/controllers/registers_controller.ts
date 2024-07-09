@@ -33,7 +33,6 @@ export default class RegistersController {
       })
       return response.created()
     } catch (e) {
-      console.log(e)
       return response.internalServerError()
     }
   }
