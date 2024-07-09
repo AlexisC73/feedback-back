@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
 import Account from '#models/account'
-import { LoginPayload } from '../../lib/domain/payload/login_payload.js'
+import { LoginPayload } from '../../../lib/domain/payload/login_payload.js'
 
 export default class LoginsController {
   async handle({ request, response, auth }: HttpContext): Promise<void> {

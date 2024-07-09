@@ -1,8 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
 import Account from '#models/account'
-import { Role } from '../../lib/domain/accounts/accounts.js'
-import { RegisterPayload } from '../../lib/domain/payload/register_payload.js'
+import { Role } from '../../../lib/domain/accounts/accounts.js'
+import { RegisterPayload } from '../../../lib/domain/payload/register_payload.js'
 
 export default class RegistersController {
   async handle({ request, response }: HttpContext): Promise<void> {

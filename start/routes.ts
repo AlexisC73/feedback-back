@@ -7,9 +7,9 @@
 |
 */
 
-const RegistersController = () => import('#controllers/registers_controller')
-const LoginsController = () => import('#controllers/login_controller')
-const GetMeController = () => import('#controllers/get_me_controller')
+const RegistersController = () => import('#controllers/auth/registers_controller')
+const LoginsController = () => import('#controllers/auth/login_controller')
+const GetMeController = () => import('#controllers/auth/get_me_controller')
 import router from '@adonisjs/core/services/router'
 
 router.get('/', async () => {
