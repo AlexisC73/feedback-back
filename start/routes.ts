@@ -12,16 +12,14 @@ const LoginsController = () => import('#controllers/auth/login_controller')
 const GetMeController = () => import('#controllers/auth/get_me_controller')
 import router from '@adonisjs/core/services/router'
 
-router.get('/', async () => {
-  return {
-    hello: 'world',
-  }
-})
-
 router
   .group(() => {
-    router.post('/register', [RegistersController, 'handle'])
-    router.post('/login', [LoginsController, 'handle'])
-    router.get('/me', [GetMeController, 'handle'])
+    router
+      .group(() => {
+        router.post('/register', [RegistersController, 'handle'])
+        router.post('/login', [LoginsController, 'handle'])
+        router.get('/me', [GetMeController, 'handle'])
+      })
+      .prefix('/auth')
   })
-  .prefix('/auth')
+  .prefix('/api')
