@@ -10,6 +10,8 @@ export default class extends BaseSchema {
       table.uuid('account_id').references('accounts.id').onDelete('CASCADE')
       table.timestamp('created_at')
       table.timestamp('updated_at')
+
+      table.unique(['feedback_id', 'account_id'])
     })
   }
 
