@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto'
 
 export default class Feedback extends BaseModel {
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
 
   @column()
   declare title: string
@@ -34,7 +34,7 @@ export default class Feedback extends BaseModel {
   declare updatedAt: DateTime
 
   @beforeCreate()
-  static async generateUUID(account: Account) {
-    account.id = randomUUID()
+  static async generateUUID(feedback: Feedback) {
+    feedback.id = randomUUID()
   }
 }

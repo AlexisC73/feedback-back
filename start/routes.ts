@@ -11,6 +11,10 @@ const RegistersController = () => import('#controllers/auth/registers_controller
 const LoginsController = () => import('#controllers/auth/login_controller')
 const GetMeController = () => import('#controllers/auth/get_me_controller')
 const AddFeedbacksController = () => import('#controllers/feedback/add_feedbacks_controller')
+const GetFeedbacksController = () => import('#controllers/feedback/get_feedbacks_controller')
+const EditFeedbacksController = () => import('#controllers/feedback/edit_feedbacks_controller')
+const DeleteFeedbacksController = () => import('#controllers/feedback/delete_feedbacks_controller')
+const UpvotesController = () => import('#controllers/feedback/upvotes_controller')
 import router from '@adonisjs/core/services/router'
 
 router
@@ -26,6 +30,10 @@ router
     router
       .group(() => {
         router.post('/', [AddFeedbacksController, 'handle'])
+        router.get('/', [GetFeedbacksController, 'handle'])
+        router.put('/:id', [EditFeedbacksController, 'handle'])
+        router.delete('/:id', [DeleteFeedbacksController, 'handle'])
+        router.post('/:id/upvote', [UpvotesController, 'handle'])
       })
       .prefix('/feedbacks')
   })
