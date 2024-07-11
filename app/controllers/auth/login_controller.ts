@@ -1,16 +1,15 @@
 import type { HttpContext } from '@adonisjs/core/http'
-
+import { LoginPayload } from '#lib/domain/payload/login_payload'
 import Account from '#models/account'
-import { LoginPayload } from '../../../lib/domain/payload/login_payload.js'
 import FieldErrorException from '#exceptions/field_errors_exception'
 
 export default class LoginsController {
   async handle({ request, response, auth }: HttpContext): Promise<void> {
-    const body = request.all()
+    const { email, password } = request.only(['email', 'password'])
 
     const loginPayload = new LoginPayload({
-      email: body.email,
-      password: body.password,
+      email,
+      password,
     })
 
     if (!loginPayload.validate()) {

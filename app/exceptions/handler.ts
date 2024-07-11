@@ -24,7 +24,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
 
     if (error instanceof errors.E_INVALID_CREDENTIALS) {
       return ctx.response.badRequest({
-        message: 'Invalid credentials',
+        message: error.message,
       })
     }
 

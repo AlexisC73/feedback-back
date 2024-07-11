@@ -7,11 +7,11 @@ import FieldErrorException from '#exceptions/field_errors_exception'
 
 export default class RegistersController {
   async handle({ request, response }: HttpContext): Promise<void> {
-    const body = request.all()
+    const { email, password } = request.only(['email', 'password'])
 
     const registerPayload = new RegisterPayload({
-      email: body.email,
-      password: body.password,
+      email,
+      password,
     })
 
     if (!registerPayload.validate()) {
