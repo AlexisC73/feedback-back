@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import { FeedbackCategory, FeedbackStatus } from '../../lib/domain/feedback/feedback.js'
 import Account from './account.js'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import { randomUUID } from 'node:crypto'
+import Upvote from './upvote.js'
 
 export default class Feedback extends BaseModel {
   @column({ isPrimary: true })
@@ -26,6 +27,9 @@ export default class Feedback extends BaseModel {
 
   @belongsTo(() => Account)
   declare owner: BelongsTo<typeof Account>
+
+  @hasMany(() => Upvote)
+  declare upvotes: HasMany<typeof Upvote>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
