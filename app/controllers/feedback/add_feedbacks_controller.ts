@@ -6,10 +6,17 @@ export default class AddFeedbacksController {
   constructor() {}
 
   async handle({ response, request, auth }: HttpContext) {
-    const { title, description, category } = request.only(['title', 'description', 'category'])
+    const { title, description, category, id } = request.only([
+      'title',
+      'description',
+      'category',
+      'id',
+    ])
+
     const user = await auth.authenticate()
 
     await Feedback.create({
+      id,
       title,
       description,
       category,

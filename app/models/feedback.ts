@@ -39,6 +39,6 @@ export default class Feedback extends BaseModel {
 
   @beforeCreate()
   static async generateUUID(feedback: Feedback) {
-    feedback.id = randomUUID()
+    feedback.id = feedback.id ?? randomUUID()
   }
 }
