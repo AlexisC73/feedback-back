@@ -25,7 +25,7 @@ export default class Account extends compose(BaseModel, AuthFinder) {
   declare role: Role
 
   @column()
-  declare avatar?: string
+  declare avatar: string | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
