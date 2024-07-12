@@ -4,7 +4,11 @@ import type { HttpContext } from '@adonisjs/core/http'
 export default class GetFeedbacksController {
   async handle({ response, auth }: HttpContext) {
     const account = await auth.authenticate()
-    const feedbacks = await Feedback.query().preload('upvotes').select('*').exec()
+    const feedbacks = await Feedback.query()
+      .preload('upvotes')
+      .preload('comments')
+      .select('*')
+      .exec()
 
     return response.status(200).json(
       feedbacks.map((f) => ({
@@ -15,7 +19,7 @@ export default class GetFeedbacksController {
         status: f.status,
         owner: f.ownerId,
         upvotes: f.upvotes.length,
-        comments: 0,
+        comments: f.comments.length,
         upvoted: f.upvotes.some((u) => u.accountId === account.id),
       }))
     )

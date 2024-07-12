@@ -5,6 +5,7 @@ import Account from './account.js'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import { randomUUID } from 'node:crypto'
 import Upvote from './upvote.js'
+import Comment from './comment.js'
 
 export default class Feedback extends BaseModel {
   @column({ isPrimary: true })
@@ -30,6 +31,9 @@ export default class Feedback extends BaseModel {
 
   @hasMany(() => Upvote)
   declare upvotes: HasMany<typeof Upvote>
+
+  @hasMany(() => Comment)
+  declare comments: HasMany<typeof Comment>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
