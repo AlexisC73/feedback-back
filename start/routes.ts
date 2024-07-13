@@ -37,9 +37,14 @@ router
         router.get('/', [GetFeedbacksController, 'handle'])
         router.put('/:id', [EditFeedbacksController, 'handle'])
         router.delete('/:id', [DeleteFeedbacksController, 'handle'])
-        router.post('/:id/upvote', [UpvotesController, 'handle'])
       })
       .prefix('/feedbacks')
+
+    router
+      .group(() => {
+        router.post('/feedback/:id', [UpvotesController, 'handle'])
+      })
+      .prefix('/upvotes')
 
     router
       .group(() => {

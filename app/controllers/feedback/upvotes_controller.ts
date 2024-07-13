@@ -8,9 +8,9 @@ export default class UpvotesController {
     const { upvote: upvoted }: { upvote: boolean } = request.only(['upvote'])
 
     const feedbackId = request.param('id')
-    const feedback = await Feedback.findByOrFail('id', feedbackId)
+    const feedback = await Feedback.query().preload('upvotes').where('id', feedbackId).firstOrFail()
 
-    const upvote = await Upvote.findBy('account_id', account.id)
+    const upvote = feedback.upvotes.find((u) => u.accountId === account.id)
     if (!upvote) {
       if (upvoted) {
         await Upvote.create({ feedbackId: feedback.id, accountId: account.id })
