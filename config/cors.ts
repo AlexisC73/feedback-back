@@ -9,7 +9,7 @@ import env from '#start/env'
  */
 const corsConfig = defineConfig({
   enabled: true,
-  origin: env.get('NODE_ENV') === 'production' ? 'https://example.com' : 'http://localhost:5173',
+  origin: env.get('HOST'),
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
   headers: true,
   exposeHeaders: [],
