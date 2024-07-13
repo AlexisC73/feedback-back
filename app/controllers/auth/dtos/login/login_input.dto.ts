@@ -6,7 +6,7 @@ export class LoginInputDTO {
   errors: FieldError[] = []
 
   constructor({ email, password }: LoginInputDTO['data']) {
-    this.#email = email
+    this.#email = email.trim().toLocaleLowerCase()
     this.#password = password
   }
 

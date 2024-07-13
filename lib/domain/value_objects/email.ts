@@ -9,7 +9,7 @@ export class EmailVO extends ValueObject {
       this.#email = ''
       return
     }
-    this.#email = email.trim()
+    this.#email = email.trim().toLocaleLowerCase()
   }
 
   equals(email: EmailVO): boolean {
