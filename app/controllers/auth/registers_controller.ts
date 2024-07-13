@@ -4,12 +4,13 @@ import Account from '#models/account'
 import { Role } from '../../../lib/domain/accounts/accounts.js'
 import { RegisterPayload } from '../../../lib/domain/payload/register_payload.js'
 import FieldErrorException from '#exceptions/field_errors_exception'
+import { RegisterInputDTO } from './dtos/register/register_input.dto.js'
 
 export default class RegistersController {
   async handle({ request, response }: HttpContext): Promise<void> {
     const { email, password } = request.only(['email', 'password'])
 
-    const registerPayload = new RegisterPayload({
+    const registerPayload = new RegisterInputDTO({
       email,
       password,
     })
@@ -24,8 +25,8 @@ export default class RegistersController {
     }
 
     await Account.create({
-      email: registerPayload.email,
-      password: registerPayload.password,
+      email: registerPayload.email.value,
+      password: registerPayload.password.value,
       role: Role.USER,
     })
     return response.created()
