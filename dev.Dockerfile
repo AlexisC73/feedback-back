@@ -15,7 +15,7 @@ COPY --from=deps /app/node_modules /app/node_modules
 ADD . .
 RUN node ace build --ignore-ts-errors
 
-# Production stage
+# Development stage
 FROM base
 ENV NODE_ENV=development
 WORKDIR /app

@@ -2,7 +2,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 import Account from '#models/account'
 import { Role } from '../../../lib/domain/accounts/accounts.js'
-import { RegisterPayload } from '../../../lib/domain/payload/register_payload.js'
 import FieldErrorException from '#exceptions/field_errors_exception'
 import { RegisterInputDTO } from './dtos/register/register_input.dto.js'
 
