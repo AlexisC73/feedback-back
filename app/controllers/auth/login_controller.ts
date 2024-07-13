@@ -1,16 +1,14 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { LoginPayload } from '#lib/domain/payload/login_payload'
 import Account from '#models/account'
 import FieldErrorException from '#exceptions/field_errors_exception'
+import { LoginInputDTO } from './dtos/login/login_input.dto.js'
+import { LoginOutputDTO } from './dtos/login/login_output.dto.js'
 
 export default class LoginsController {
   async handle({ request, response, auth }: HttpContext): Promise<void> {
     const { email, password } = request.only(['email', 'password'])
 
-    const loginPayload = new LoginPayload({
-      email,
-      password,
-    })
+    const loginPayload = new LoginInputDTO({ email, password })
 
     if (!loginPayload.validate()) {
       throw new FieldErrorException(loginPayload.errors)
@@ -18,6 +16,18 @@ export default class LoginsController {
 
     const user = await Account.verifyCredentials(loginPayload.email, loginPayload.password)
     await auth.use('web').login(user, false)
-    return response.ok(user)
+
+    const outputDto = new LoginOutputDTO({
+      id: user.id,
+      email: user.email,
+      avatar: user.avatar,
+      role: user.role,
+    })
+
+    if (!outputDto.validate()) {
+      response.internalServerError()
+    }
+
+    return response.ok(outputDto.data)
   }
 }
