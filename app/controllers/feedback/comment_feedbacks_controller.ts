@@ -5,10 +5,10 @@ import FieldErrorException from '#exceptions/field_errors_exception'
 
 export default class CommentFeedbacksController {
   async handle({ request, auth, response }: HttpContext) {
-    const { content, feedbackId, id } = request.only(['content', 'feedbackId', 'id'])
+    const { content, id } = request.only(['content', 'feedbackId', 'id'])
     const commentFeedbackInputDTO = new CommentFeedbackInputDTO({
       content,
-      feedbackId,
+      feedbackId: request.param('id'),
       id,
     })
 
