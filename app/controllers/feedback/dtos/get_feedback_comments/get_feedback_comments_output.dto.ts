@@ -3,9 +3,21 @@ export interface GetFeedbackCommentsOutputDTOItem {
   content: string
   feedbackId: string
   sender: {
-    name: string
+    id: string
+    username: string
+    displayName: string
     avatar: string | null
   }
+  replayTo: {
+    id: string
+    mainCommentId: string
+    user: {
+      id: string
+      username: string
+      displayName: string
+      avatar: string | null
+    }
+  } | null
 }
 
 export type GetFeedbackCommentsOutputDTO = GetFeedbackCommentsOutputDTOItem[]

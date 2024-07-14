@@ -12,11 +12,14 @@ export default class GetFeedbackCommentsController {
     const domainComments: GetFeedbackCommentsOutputDTO = comments.map((c) => ({
       id: c.id,
       sender: {
-        name: c.sender.email,
         avatar: c.sender.avatar,
+        displayName: c.sender.displayName,
+        id: c.sender.id,
+        username: c.sender.username,
       },
       content: c.content,
       feedbackId: c.feedbackId,
+      replayTo: null,
     }))
 
     return domainComments
