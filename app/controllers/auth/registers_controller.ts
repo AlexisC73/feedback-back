@@ -35,10 +35,7 @@ export default class RegistersController {
     if (findAccount !== null) {
       let errors: FieldError[] = []
       if (findAccount.email === registerPayload.email.value) {
-        errors.push({
-          field: 'email',
-          errors: ['Email already exists'],
-        })
+        return response.badRequest()
       }
       if (findAccount.username === registerPayload.username) {
         errors.push({
