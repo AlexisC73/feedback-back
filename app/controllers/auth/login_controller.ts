@@ -17,17 +17,13 @@ export default class LoginsController {
     const user = await Account.verifyCredentials(loginPayload.email, loginPayload.password)
     await auth.use('web').login(user, false)
 
-    const outputDto = new LoginOutputDTO({
+    const outputDto: LoginOutputDTO = {
       id: user.id,
       email: user.email,
       avatar: user.avatar,
       role: user.role,
-    })
-
-    if (!outputDto.validate()) {
-      response.internalServerError()
     }
 
-    return response.ok(outputDto.data)
+    return response.ok(outputDto)
   }
 }

@@ -1,24 +1,36 @@
 import Feedback from '#models/feedback'
 import Upvote from '#models/upvote'
 import type { HttpContext } from '@adonisjs/core/http'
+import { UpvoteInputDTO } from './dtos/upvote/upvote_input.dto.js'
+import FieldErrorException from '#exceptions/field_errors_exception'
 
 export default class UpvotesController {
-  async handle({ request, auth }: HttpContext) {
+  async handle({ request, auth, response }: HttpContext) {
     const account = await auth.authenticate()
-    const { upvote: upvoted }: { upvote: boolean } = request.only(['upvote'])
+    const { upvote }: { upvote: boolean } = request.only(['upvote'])
 
-    const feedbackId = request.param('id')
-    const feedback = await Feedback.query().preload('upvotes').where('id', feedbackId).firstOrFail()
+    const upvoteInputDTO = new UpvoteInputDTO({ upvote, id: request.param('id') })
 
-    const upvote = feedback.upvotes.find((u) => u.accountId === account.id)
-    if (!upvote) {
-      if (upvoted) {
+    if (!upvoteInputDTO.validate()) {
+      throw new FieldErrorException(upvoteInputDTO.errors)
+    }
+
+    const feedback = await Feedback.query()
+      .preload('upvotes')
+      .where('id', upvoteInputDTO.data.id)
+      .firstOrFail()
+
+    const fundUpvote = feedback.upvotes.find((u) => u.accountId === account.id)
+    if (!fundUpvote) {
+      if (upvoteInputDTO.data.upvote) {
         await Upvote.create({ feedbackId: feedback.id, accountId: account.id })
       }
     } else {
-      if (!upvoted) {
-        await upvote.delete()
+      if (!upvoteInputDTO.data.upvote) {
+        await fundUpvote.delete()
       }
     }
+
+    return response.ok(undefined)
   }
 }

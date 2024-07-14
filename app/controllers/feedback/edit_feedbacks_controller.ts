@@ -1,5 +1,7 @@
 import Feedback from '#models/feedback'
 import type { HttpContext } from '@adonisjs/core/http'
+import { EditFeedbackInputDTO } from './dtos/edit_feedback/edit_feedback_input.dto.js'
+import FieldErrorException from '#exceptions/field_errors_exception'
 
 export default class EditFeedbacksController {
   async handle({ request, response, auth }: HttpContext) {
@@ -12,16 +14,28 @@ export default class EditFeedbacksController {
       'status',
     ])
 
-    const feedback = await Feedback.findOrFail(request.param('id'))
+    const editFeedbackInputDTO = new EditFeedbackInputDTO({
+      id: request.param('id'),
+      title,
+      description,
+      category,
+      status,
+    })
+
+    if (!editFeedbackInputDTO.validate()) {
+      throw new FieldErrorException(editFeedbackInputDTO.errors)
+    }
+
+    const feedback = await Feedback.findOrFail(editFeedbackInputDTO.id)
 
     if (feedback.ownerId !== user.id) {
       return response.unauthorized()
     }
 
-    feedback.title = title
-    feedback.description = description
-    feedback.category = category
-    feedback.status = status
+    feedback.title = editFeedbackInputDTO.title
+    feedback.description = editFeedbackInputDTO.description
+    feedback.category = editFeedbackInputDTO.category
+    feedback.status = editFeedbackInputDTO.status
     await feedback.save()
     return
   }
