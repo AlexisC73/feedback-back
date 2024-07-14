@@ -27,6 +27,12 @@ export default class Account extends compose(BaseModel, AuthFinder) {
   @column()
   declare avatar: string | null
 
+  @column()
+  declare displayName: string
+
+  @column()
+  declare username: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

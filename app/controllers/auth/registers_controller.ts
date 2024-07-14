@@ -4,29 +4,58 @@ import Account from '#models/account'
 import { Role } from '../../../lib/domain/accounts/accounts.js'
 import FieldErrorException from '#exceptions/field_errors_exception'
 import { RegisterInputDTO } from './dtos/register/register_input.dto.js'
+import { FieldError } from '#lib/errors/errors'
 
 export default class RegistersController {
   async handle({ request, response }: HttpContext): Promise<void> {
-    const { email, password } = request.only(['email', 'password'])
+    const { email, password, displayName, username } = request.only([
+      'email',
+      'password',
+      'displayName',
+      'username',
+    ])
 
     const registerPayload = new RegisterInputDTO({
       email,
       password,
+      displayName,
+      username,
     })
 
     if (!registerPayload.validate()) {
       throw new FieldErrorException(registerPayload.errors)
     }
 
-    const findAccount = await Account.findBy('email', registerPayload.email)
+    const findAccount = await Account.query()
+      .select('*')
+      .where('email', registerPayload.email.value)
+      .orWhere('username', registerPayload.username)
+      .first()
+
     if (findAccount !== null) {
-      return response.forbidden()
+      let errors: FieldError[] = []
+      if (findAccount.email === registerPayload.email.value) {
+        errors.push({
+          field: 'email',
+          errors: ['Email already exists'],
+        })
+      }
+      if (findAccount.username === registerPayload.username) {
+        errors.push({
+          field: 'username',
+          errors: ['Username already exists'],
+        })
+      }
+
+      throw new FieldErrorException(errors)
     }
 
     await Account.create({
       email: registerPayload.email.value,
       password: registerPayload.password.value,
       role: Role.USER,
+      displayName: registerPayload.displayName,
+      username: registerPayload.username,
     })
     return response.created()
   }

@@ -5,11 +5,15 @@ import { FieldError } from '#lib/errors/errors'
 export class RegisterInputDTO {
   #email: EmailVO
   #password: PasswordVO
+  #displayName: string
+  #username: string
   errors: FieldError[] = []
 
-  constructor({ email, password }: RegisterInputDTO['data']) {
+  constructor({ email, password, displayName, username }: RegisterInputDTO['data']) {
     this.#email = new EmailVO(email)
     this.#password = new PasswordVO(password)
+    this.#displayName = displayName
+    this.#username = username
   }
 
   validate() {
@@ -25,6 +29,18 @@ export class RegisterInputDTO {
         errors: this.#password.errors,
       })
     }
+    if (this.#displayName.length === 0) {
+      this.errors.push({
+        field: 'displayName',
+        errors: ['Display name is required'],
+      })
+    }
+    if (this.#username.length === 0) {
+      this.errors.push({
+        field: 'username',
+        errors: ['Username is required'],
+      })
+    }
     return this.errors.length === 0
   }
 
@@ -36,10 +52,20 @@ export class RegisterInputDTO {
     return this.#password
   }
 
+  get displayName() {
+    return this.#displayName
+  }
+
+  get username() {
+    return this.#username
+  }
+
   get data() {
     return {
       email: this.#email,
       password: this.#password,
+      displayName: this.#displayName,
+      username: this.#username,
     }
   }
 }

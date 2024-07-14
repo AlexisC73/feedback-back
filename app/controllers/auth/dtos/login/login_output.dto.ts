@@ -5,4 +5,6 @@ export interface LoginOutputDTO {
   email: string
   avatar: string | null
   role: Role
+  displayName: string
+  username: string
 }

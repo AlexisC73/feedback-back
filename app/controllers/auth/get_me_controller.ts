@@ -9,6 +9,8 @@ export default class GetMeController {
       email: user.email,
       id: user.id,
       role: user.role,
+      username: user.username,
+      displayName: user.displayName,
     }
 
     return response.ok(getMeDTO)

@@ -22,6 +22,8 @@ export default class LoginsController {
       email: user.email,
       avatar: user.avatar,
       role: user.role,
+      displayName: user.displayName,
+      username: user.username,
     }
 
     return response.ok(outputDto)
