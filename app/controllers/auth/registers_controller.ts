@@ -29,7 +29,7 @@ export default class RegistersController {
     const findAccount = await Account.query()
       .select('*')
       .where('email', registerPayload.email.value)
-      .orWhere('username', registerPayload.username)
+      .orWhere('username', registerPayload.username.value)
       .first()
 
     if (findAccount !== null) {
@@ -37,7 +37,7 @@ export default class RegistersController {
       if (findAccount.email === registerPayload.email.value) {
         return response.badRequest()
       }
-      if (findAccount.username === registerPayload.username) {
+      if (findAccount.username === registerPayload.username.value) {
         errors.push({
           field: 'username',
           errors: ['Username already exists'],
@@ -51,8 +51,8 @@ export default class RegistersController {
       email: registerPayload.email.value,
       password: registerPayload.password.value,
       role: Role.USER,
-      displayName: registerPayload.displayName,
-      username: registerPayload.username,
+      displayName: registerPayload.displayName.value,
+      username: registerPayload.username.value,
     })
     return response.created()
   }

@@ -1,19 +1,21 @@
+import { DisplayNameVO } from '#lib/domain/value_objects/display_name'
 import { EmailVO } from '#lib/domain/value_objects/email'
 import { PasswordVO } from '#lib/domain/value_objects/password'
+import { UsernameVO } from '#lib/domain/value_objects/username'
 import { FieldError } from '#lib/errors/errors'
 
 export class RegisterInputDTO {
   #email: EmailVO
   #password: PasswordVO
-  #displayName: string
-  #username: string
+  #displayName: DisplayNameVO
+  #username: UsernameVO
   errors: FieldError[] = []
 
   constructor({ email, password, displayName, username }: RegisterInputDTO['data']) {
     this.#email = new EmailVO(email)
     this.#password = new PasswordVO(password)
-    this.#displayName = displayName
-    this.#username = username
+    this.#displayName = new DisplayNameVO(displayName)
+    this.#username = new UsernameVO(username)
   }
 
   validate() {
@@ -29,16 +31,16 @@ export class RegisterInputDTO {
         errors: this.#password.errors,
       })
     }
-    if (this.#displayName.length === 0) {
+    if (!this.#displayName.validate()) {
       this.errors.push({
         field: 'displayName',
-        errors: ['Display name is required'],
+        errors: this.#displayName.errors,
       })
     }
-    if (this.#username.length === 0) {
+    if (!this.#username.validate()) {
       this.errors.push({
         field: 'username',
-        errors: ['Username is required'],
+        errors: this.#username.errors,
       })
     }
     return this.errors.length === 0
