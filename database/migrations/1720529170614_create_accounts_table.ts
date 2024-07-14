@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.uuid('id', { primaryKey: true })
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
-      table.string('role').defaultTo(Role.USER).notNullable()
+      table.integer('role').defaultTo(Role.USER).notNullable()
       table.string('avatar').nullable()
       table.string('display_name').notNullable()
       table.string('username').notNullable().unique()
