@@ -4,7 +4,6 @@ import Account from '#models/account'
 import { Role } from '../../../lib/domain/accounts/accounts.js'
 import FieldErrorException from '#exceptions/field_errors_exception'
 import { RegisterInputDTO } from './dtos/register/register_input.dto.js'
-import { FieldError } from '#lib/errors/errors'
 
 export default class RegistersController {
   async handle({ request, response }: HttpContext): Promise<void> {
@@ -33,18 +32,7 @@ export default class RegistersController {
       .first()
 
     if (findAccount !== null) {
-      let errors: FieldError[] = []
-      if (findAccount.email === registerPayload.email.value) {
-        return response.badRequest()
-      }
-      if (findAccount.username === registerPayload.username.value) {
-        errors.push({
-          field: 'username',
-          errors: ['Username already exists'],
-        })
-      }
-
-      throw new FieldErrorException(errors)
+      return response.badRequest()
     }
 
     await Account.create({
