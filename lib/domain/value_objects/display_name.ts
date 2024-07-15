@@ -28,8 +28,11 @@ export class DisplayNameVO extends ValueObject {
     if (this.#displayName.length < 8) {
       this.errors.push('Username must be at least 8 characters')
     }
-    if (/^[a-zA-Z]{1,}[\s]{0,1}[a-zA-Z]{0,}$/.test(this.#displayName) === false) {
-      this.errors.push('Must contain only letters and 1 whitespace maximum.')
+    if (this.#displayName.split('').filter((c) => c === ' ').length > 1) {
+      this.errors.push('Display name must have at most 1 whitespace')
+    }
+    if (/^[a-zA-Z\s]{0,}$/.test(this.#displayName) === false) {
+      this.errors.push('Only letters (1 whitespace allowed)')
     }
     return this.errors.length === 0
   }

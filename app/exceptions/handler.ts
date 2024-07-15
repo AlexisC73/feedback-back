@@ -1,7 +1,6 @@
 import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import FieldErrorException from './field_errors_exception.js'
-import { errors } from '@adonisjs/auth'
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -17,14 +16,12 @@ export default class HttpExceptionHandler extends ExceptionHandler {
   async handle(error: unknown, ctx: HttpContext) {
     if (error instanceof FieldErrorException) {
       return ctx.response.badRequest({
-        message: error.message,
-        errors: error.errors,
-      })
-    }
-
-    if (error instanceof errors.E_INVALID_CREDENTIALS) {
-      return ctx.response.badRequest({
-        message: error.message,
+        errors: [
+          {
+            message: error.message,
+            data: error.errors,
+          },
+        ],
       })
     }
 

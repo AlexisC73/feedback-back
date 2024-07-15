@@ -30,9 +30,6 @@ export class UsernameVO extends ValueObject {
     if (this.#username.length < MINIMUM_LENGTH) {
       this.errors.push(`Username must be at least ${MINIMUM_LENGTH} characters`)
     }
-    if (this.#username.includes(' ')) {
-      this.errors.push('Username must not contain spaces')
-    }
     if (/^[a-zA-Z]+$/.test(this.#username) === false) {
       this.errors.push('Username must only contain letters')
     }
