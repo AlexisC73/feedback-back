@@ -11,16 +11,16 @@ export interface Feedback {
 }
 
 export enum FeedbackCategory {
-  FEATURE = 'Feature',
-  BUG = 'Bug',
-  ENHANCEMENT = 'Enhancement',
-  UI = 'UI',
-  UX = 'UX',
+  UI = 'ui',
+  UX = 'ux',
+  ENHANCEMENT = 'enhancement',
+  BUG = 'bug',
+  FEATURE = 'feature',
 }
 
 export enum FeedbackStatus {
-  SUGGESTION = 'Suggestion',
-  PLANNED = 'Planned',
-  IN_PROGRESS = 'In-Progress',
-  LIVE = 'Live',
+  SUGGESTION = 'suggestion',
+  PLANNED = 'planned',
+  IN_PROGRESS = 'in-progress',
+  LIVE = 'live',
 }
