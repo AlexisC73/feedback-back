@@ -3,8 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { GetFeedbackCommentsOutputDTO } from './dtos/get_feedback_comments/get_feedback_comments_output.dto.js'
 
 export default class GetFeedbackCommentsController {
-  async handle({ auth, request }: HttpContext) {
-    await auth.authenticate()
+  async handle({ request }: HttpContext) {
     const feedbackId = request.param('id')
 
     const comments = await Comment.query().where('feedbackId', feedbackId).preload('sender').exec()
