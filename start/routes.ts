@@ -19,6 +19,7 @@ const CommentFeedbacksController = () =>
   import('#controllers/feedback/comment_feedbacks_controller')
 const GetFeedbackCommentsController = () =>
   import('#controllers/feedback/get_feedback_comments_controller')
+const LogoutsController = () => import('#controllers/auth/logouts_controller')
 import router from '@adonisjs/core/services/router'
 
 router
@@ -28,6 +29,7 @@ router
         router.post('/register', [RegistersController, 'handle'])
         router.post('/login', [LoginsController, 'handle'])
         router.get('/me', [GetMeController, 'handle'])
+        router.get('/logout', [LogoutsController, 'handle'])
       })
       .prefix('/auth')
 
